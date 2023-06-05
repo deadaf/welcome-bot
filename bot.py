@@ -21,6 +21,11 @@ class WelcomeBot(commands.Bot):
         except Exception as e:
             print("Failed to connect to database. {0}".format(e))
 
+        with open("schemas.sql") as f:
+            await self.db.execute(f.read())
+
+        print("Executed all queries.")
+
         for ext in exts:
             await self.load_extension(ext)
 
