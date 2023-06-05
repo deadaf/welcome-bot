@@ -2,6 +2,7 @@ import discord
 from bot import WelcomeBot
 from discord.ext import commands
 from discord import app_commands
+from utils.wel import get_welcome_card
 
 
 class WelcomeCmds(commands.Cog):
@@ -46,8 +47,8 @@ class WelcomeCmds(commands.Cog):
 
     @welcome.command(name="test", description="Test the welcome message")
     @app_commands.checks.has_permissions(manage_guild=True)
-    async def test(self, interaction: discord.Interaction):
-        self.bot.dispatch("member_join", interaction.guild.me)
+    async def test(self, interaction: discord.Interaction, user: discord.Member):
+        self.bot.dispatch("member_join", user)
         return await interaction.response.send_message("Sent test message!")
 
     @commands.Cog.listener()
@@ -60,7 +61,13 @@ class WelcomeCmds(commands.Cog):
 
         channel = member.guild.get_channel(record["channel_id"])
         message = record["message"]
-        await channel.send(message.format(user=member, guild=member.guild.name))
+
+        welcome_card = await get_welcome_card(member)
+
+        await channel.send(
+            message.format(user=member, guild=member.guild.name),
+            file=discord.File(welcome_card, filename="welcome.png"),
+        )
 
 
 async def setup(bot: WelcomeBot):

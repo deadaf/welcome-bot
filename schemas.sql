@@ -1,4 +1,4 @@
-drop table if exists welcome;
+-- drop table if exists welcome;
 
 create table if not exists welcome (
     guild_id bigint primary key,
