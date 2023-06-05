@@ -1,0 +1,4 @@
+discord.py==2.2.3
+asyncpg==0.27.0
+html2image==2.0.3
+Pillow==9.5.0
